@@ -1,0 +1,7 @@
+pandas
+tweepy
+json
+pymongo
+hdfs
+fastavro
+nsetools
