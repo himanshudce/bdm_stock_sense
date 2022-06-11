@@ -15,8 +15,8 @@ outputpath = '/home/bdm/data_sources/stock_data_parquet_agg/'
 date = pd.Timestamp.now(tz="Asia/Kolkata")
 date_str = str(date.date()).replace("-","_")
 print("extracting data for date ", date_str)
-hour = str(date.hour)
-min = str(date.minute)
+hour = str(date.hour-1)
+# min = str(date.minute)
 
 #base location date from where data of today's date needs to be read
 base_location_date = os.path.join(path,date_str)
@@ -30,8 +30,9 @@ try:
 except:
     pass
 
-# name of files with current hour stored in local 
-name = 'stock_data'+date_str+'_'+hour
+# name of files with Previous hour stored in parquet 
+name = 'stock_data'+'_'+hour
+print(name)
 location_hr = os.path.join(base_location_date,name)
 
 out_hr = os.path.join(outputpath,name)
@@ -57,17 +58,18 @@ def hour_agg(path):
   
     df1 = spark.read.parquet(path)
     df2 = df1.select('symbol','lastPrice','dayHigh','dayLow')
+    df2.show()
+    print(df2.dtypes)
     # min, max 
     rdd = df2.rdd
+    #rdd.show()
     rdd2 = rdd.map(lambda x:(x[0],(x[2],x[3])))
+    
     rdd3 = rdd2.reduceByKey(lambda a,b : (max(a[0],b[0]),min(a[1],b[1])))
     # average
     rdd4 = rdd.map(lambda x:(x[0],(x[1],1)))
     rdd5 = rdd4.reduceByKey(lambda x1,x2:(x1[0]+x2[0],x1[1]+x2[1])).mapValues(lambda x:x[0]/x[1])
     rdd6 = rdd3.join(rdd5)
-
-    rdd6.collect()
-    
     df = rdd6.toDF()
     return df
 

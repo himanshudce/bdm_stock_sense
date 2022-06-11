@@ -14,10 +14,10 @@ The Whole Pipeline Developement will be done in Three Phases -
 
 The high level view of the pipeline is indicated below -
 
-![img](docs/high_level_view.png)
+![img](docs/BDM_PRO_2.png)
 
 
-As indicated in the above pipleine, we have two data sources, first one is the twitter stream and the second one is the stock market API. We are collecting both data sources in mongoDB after processing at the end for exploring and integrated visualization.  
+As indicated in the above pipleine, we have two data sources, first one is the twitter stream and the second one is the stock market API. We are collecting tweet stream data in mongoDB after processing at the end for exploitation zone and integrated visualization.  
 
 
 
@@ -47,7 +47,6 @@ Further details can be found here - [nsedocs](https://nsetools.readthedocs.io/en
 We used the top 25 companies listed here in [NSE Top 100](https://www.moneycontrol.com/stocks/marketinfo/marketcap/nse/index.html)
 We have provided the csv file with top 25 companies listed for NSE.
 
-**Any granulrities can be adapted when scalling the project**
 
 
 
@@ -55,45 +54,39 @@ We have provided the csv file with top 25 companies listed for NSE.
 
 ## 2. Twitter Stream
 
-### A. Setup Kafka server and MongoDB
+### **A. Setup Kafka server and MongoDB**
 
 **I. Kafka Server**
 
 1. start zookeeper server on one terminal
 ```#zookeper default port 2181
-kafka_2.13-3.1.0/bin/zookeeper-server-start.sh kafka_2.13-3.1.0/config/zookeeper.properties
+BDM_Software/kafka_2.13-3.1.0/bin/zookeeper-server-start.sh BDM_Software/kafka_2.13-3.1.0/config/zookeeper.properties
 ```
 
 2. start kafka server on another terminal
 ```# kafka default port 2181
-kafka_2.13-3.1.0/bin/kafka-server-start.sh kafka_2.13-3.1.0/config/server.properties
+BDM_Software/kafka_2.13-3.1.0/bin/kafka-server-start.sh BDM_Software/kafka_2.13-3.1.0/config/server.properties
 ```
 
 
 3. create a topic twitter if not created
 ```
-kafka_2.13-3.1.0/bin/kafka-topics.sh --create --topic twitter --bootstrap-server localhost:9092
+BDM_Software/kafka_2.13-3.1.0/bin/kafka-topics.sh --create --topic twitter --bootstrap-server localhost:9092
 ```
-
 
 
 **II. MongoDB Server**
 
 1. Open tmux session in detached mode and keep running mongoDB server on backend
 ```
-tmux new -s mongodb
 BDM_Software/mongodb/bin/mongod --bind_ip_all --dbpath /home/bdm/BDM_Software/data/mongodb_data/
 ```
-more on tmux session - [Tmux](https://tmuxcheatsheet.com/)
+**The above servers can be run on tmux sessions as well to keep them running - [Tmux](https://tmuxcheatsheet.com/)**
 
+<br>
 
-2. Run the mongo_config.py file to create setup the mongo Database
-```
-python3 config/mongo_config.py
-```
-
-
-### B. Start stream and save in MongoDB
+### **B. Start twitter Stream**
+From sense_stock folder run -
 
 1. run kafka producer
 ```
@@ -101,20 +94,32 @@ python3 src/stream_collector/kafka_producer.py
 ```
 
 2. 
-
-
-
-
+```
+python3 src/stream_collector/spark_processing.py
+```
 
 ## 2. Stock Makrket API
 
 
-## 3. Integrated Schema
-
-mongoDB
 
 
-# Phase 1
+
+## 3. Visualization
+
+Once the twitter stream and stock data insertion started the jupyter notebook can be run **visualization.ipynb**
+
+1. It will display each minute tweets
+2. And each minutes stock prices
+
+**Any granulrities can be adapted when scalling the project**
+
+
+
+
+# ----------------------------------------------------------
+
+# Phase 1 (Project P1)
+
 The high level view of Phase one data pipeline is indicated below - 
 <!-- ![img](docs/high_level_view.png) -->
 

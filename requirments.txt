@@ -5,3 +5,6 @@ pymongo
 hdfs
 fastavro
 nsetools
+seaborn
+pyspark
+matplotlib
