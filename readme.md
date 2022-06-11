@@ -33,7 +33,8 @@ Detailed Video - [How to setup Tweet](https://www.youtube.com/watch?v=Lu1nskBkPJ
 
 **2. Stock API**
 
-clone the repo
+clone the repo and place the nsetools in **src/local_collector** \
+in our code we have already placed it. 
 ```
 https://github.com/vsjha18/nsetools
 ```
@@ -100,9 +101,26 @@ python3 src/stream_collector/spark_processing.py
 
 ## 2. Stock Makrket API
 
+We run the stock extraction files in VM using crontab in unix environment, which execute the file every day accordint to pattern. [Crontab](https://crontab.guru/)
 
+Below are the instruction to setup. Simply type 
+```
+crontab -e 
+```
+to edit the file in any mode (nano,vim,etc)
 
+```
 
+* * * * * python3 /home/bdm/sense_stock/src/local_collector/st_load_local.py >> /home/bdm/logs/local_logs.log
+* * * * * python3 /home/bdm/sense_stock/src/db_collector/st_load_parquet.py >> /home/bdm/logs/parquet_logs.log
+```
+
+**Note** :
+1. we also have aggregation over data using RDDs for each hour which can be run everyhour using the following command
+
+```
+0 * * * * python3 /home/bdm/sense_stock/src/db_collector/spark_rdd_aggregation.py >> /home/bdm/logs/parquet_logs.log
+```
 
 ## 3. Visualization
 
