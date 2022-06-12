@@ -134,12 +134,12 @@ Once the twitter stream and stock data insertion started the jupyter notebook ca
 
 
 
-# ----------------------------------------------------------
+# ---------------------------------------------------------
 
 # Phase 1 (Project P1)
 
 The high level view of Phase one data pipeline is indicated below - 
-<!-- ![img](docs/high_level_view.png) -->
+![img](docs/high_level_view.png)
 
 <br>
 
