@@ -94,7 +94,7 @@ From sense_stock folder run -
 python3 src/stream_collector/kafka_producer.py
 ```
 
-2. 
+2. Run Spark Pipeline
 ```
 python3 src/stream_collector/spark_processing.py
 ```
